@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%=  person%></title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+<body style="background-color:#ccffff;">
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary fixed-top">
+		<a class="navbar-brand" href="/profiles/<%=person%>">NITK-LMS</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+   		<span class="navbar-toggler-icon"></span>
+	 	</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      <li class="nav-item dropdown">
+		        <!-- <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          Actions
+		        </a>
+		        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> -->
+		          <a class="dropdown-item" href="/profiles/<%=person%>/neworder">Place an Order</a>
+		         <!--  <div class="dropdown-divider"></div> -->
+		     </li>
+		     <li>
+		          <a class="dropdown-item" href="/profiles/<%=person%>/newissue">Report an Issue</a>
+		        <!-- </div> -->
+		      </li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<button type="submit" class="btn btn-outline-dark"><a style="color: white" href="/feedback">Rate us</a></button>
+		  </form>
+		    <form class="form-inline my-2 my-lg-0">
+	      		<button type="submit" class="btn btn-outline-dark"><a style="color: white" href="/">Logout</a></button>
+	    	</form>
+	  	</div>
+	</nav>
+
+	<div class="container" style="padding-top: 100px">
+    <div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">My Orders</h3>
+					</div>
+					<table class="table table-hover" id="dev-table">
+						<thead>
+							<tr>
+								<th>S.no:</th>
+								<th>UID:</th>
+								<th>Date:</th>
+								<th>Total Amount:</th>
+								<th>Status:</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%if (orders != null) {%>
+								<%for(i =0;i<orders.length;i++){%>
+									<tr>
+										<td><%=i+1%></td>
+										<td><%=orders[i].uid%></td>
+										<td><%=orders[i].date%></td>
+										<td><%=orders[i].amount%></td>
+										<td><%=orders[i].status%></td>
+									</tr>
+								<%}%>
+							<%}%>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">My Issues</h3>
+					</div>
+					<table class="table table-hover" id="task-table">
+						<thead>
+							<tr>
+								<th>S.no:</th>
+								<th>UID:</th>
+								<th>Date:</th>
+								<th>Comment: </th>
+								<th>Status: </th>
+							</tr>
+						</thead>
+						<tbody>
+							<%if (issues != null) {%>
+								<%for(i =0;i<issues.length;i++){%>
+									<tr>
+										<td><%=i+1%></td>
+										<td><%=issues[i].uid%></td>
+										<td><%=issues[i].date%></td>
+										<td><%=issues[i].comment%></td>
+										<td><%=issues[i].status%></td>
+									</tr>
+								<%}%>
+							<%}%>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
