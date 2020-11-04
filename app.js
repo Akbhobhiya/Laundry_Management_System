@@ -112,13 +112,13 @@ function sendmailotpf(email){
 	let transporter = nodemailer.createTransport({
     	service: 'gmail',
     	auth: {
-        	user: 'kumarsekumar12345@gmail.com', // TODO: your gmail account
-        	pass: 'kumarsekumar' // TODO: your gmail password
+        	user: '', // TODO: your gmail account
+        	pass: '' // TODO: your gmail password
     	}
 	});
 
 	let mailOptions = {
-    	from: 'kumarsekumar12345@gmail.com', // TODO: email sender
+    	from: '', // TODO: email sender
     	to: email, // TODO: email receiver
     	subject: 'NITKL Login OTP',
     	text: massage
