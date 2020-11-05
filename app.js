@@ -41,7 +41,9 @@ app.get('/smailotp',function(req,res){
 app.get('/smobileotp',function(req,res){
 	res.render('smobileotp')
 })
-
+app.get('/qrlogin',function(req,res){
+	res.render('qrlogin')
+})
 
 function generate() {
         var add = 1, max = 12 - add;   
@@ -125,7 +127,7 @@ function sendmailotpf(email){
 	});
 
 	let mailOptions = {
-    	from: 'kumarsekumar12345@gmail.com', // TODO: email sender
+    	from: 'Ashok Bhobhiya', // TODO: email sender
     	to: email, // TODO: email receiver
     	subject: 'NITKL Login OTP',
     	text: massage
@@ -328,7 +330,58 @@ app.get('/mobileotpsubmit',function(req,res){
 
 
 
-
+function qrotpgen(){
+	const qr_otp = generate();
+	return qr_otp;
+}
+function example(rno){
+	const rollqwerty = rno;
+	return rollqwerty;
+}
+app.get('/qrloginsubmit',function(req,res){
+	var prodata = {
+		rno : req.query.rno,
+		pwd : md5(req.query.pwd)
+	}
+	
+	let rno=req.query.rno;
+	let pwd=req.query.pwd;
+	let errors=[]
+	db.sample1.find(prodata, function(err,dat){
+		if(dat.length>0){
+			qr_otp = qrotpgen();
+			rollqwerty = example(rno);
+			qr.toDataURL(qr_otp,(err,src)=>{
+				if(err)
+					res.send("Error occured!!");
+				res.render("qrcode",{src, rno})
+			})
+		}
+		else{
+			console.log('profile does not exit or pwd incorrect!!')
+			errors.push({msg:"Password or roll no do not match"});
+			res.render("qrlogin",{errors});
+			
+		}
+	})
+})
+app.get('/qrotp',function(req,res){
+	var prodata = {
+		otp789:  req.query.otp789
+	}
+	let otp789 = req.query.otp789
+	let errors=[]
+	if(otp789==qr_otp)
+	{
+		res.redirect('profiles/'+rollqwerty)
+	}
+	else
+	{
+		console.log('Wrong OTP!')
+		errors.push({msg:"Wrong OTP!"});
+		res.render("qrlogin",{errors});
+	}
+})
 
 
 
