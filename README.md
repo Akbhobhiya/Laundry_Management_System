@@ -14,8 +14,8 @@ If you see any version no. the packages are intalled
 
 ##  Installing project
 For installing the project type hte following commands in the terminal:
-- run `git clone "https://github.com/ayush220/wtaproject"`
-- run `cd wtaproject`
+- run `git clone https://github.com/Akbhobhiya/Laundry_Management_System.git`
+- run `cd Laundry_Management_System.git`
 - run `npm install`
 
 
@@ -32,5 +32,5 @@ You should now be seeing the main page.
 ### For any new Features, Bugs or suggestions pls open an issue.
 
 Contributors:<br>
-Ashok Bhobhiya<br>
-Ankit Gupta<br>
+## [Ashok Bhobhiya](https://github.com/Akbhobhiya)<br>
+## Ankit Gupta<br>
