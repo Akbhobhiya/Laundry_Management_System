@@ -4,11 +4,12 @@ var JSAlert = require("js-alert");
 const qr = require("qrcode");
 var shortid = require('shortid');
 const nodemailer= require('nodemailer')
+const fast2sms= require('fast-two-sms')
 var md5=require('md5');
 const validatePhoneNumber = require('validate-phone-number-node-js');
 var validator = require("email-validator");
 var bodyparser=require('body-parser');
-
+require('dotenv').config();
 var db = mongojs('mongodb://localhost:27017/mydb', ['sample1','orders','issues','feeds','admin'])
 
 var app = express()
@@ -31,8 +32,14 @@ app.get('/signup',function(req,res){
 app.get('/mailotp',function(req,res){
 	res.render('mailotp')
 })
+app.get('/mobileotp',function(req,res){
+	res.render('mobileotp')
+})
 app.get('/smailotp',function(req,res){
 	res.render('smailotp')
+})
+app.get('/smobileotp',function(req,res){
+	res.render('smobileotp')
 })
 
 
@@ -112,13 +119,13 @@ function sendmailotpf(email){
 	let transporter = nodemailer.createTransport({
     	service: 'gmail',
     	auth: {
-        	user: '', // TODO: your gmail account
-        	pass: '' // TODO: your gmail password
+        	user: 'kumarsekumar12345@gmail.com', // TODO: your gmail account
+        	pass: process.env.MAIL_PASS // TODO: your gmail password
     	}
 	});
 
 	let mailOptions = {
-    	from: '', // TODO: email sender
+    	from: 'kumarsekumar12345@gmail.com', // TODO: email sender
     	to: email, // TODO: email receiver
     	subject: 'NITKL Login OTP',
     	text: massage
@@ -132,6 +139,7 @@ function sendmailotpf(email){
 	});
 	return gmailotp;
 }
+
 
 app.get('/sendmailotp',function (req,res) {
 	var prodata = {
@@ -215,16 +223,60 @@ app.get('/mailotpsubmit',function(req,res){
 	})
 })
 
+function sendmobileotpf(phno){
+	const mobile_otp= generate();
+	const massage= 'Your OTP to Login into NITKL is::  '+ mobile_otp;
+	console.log('inside sendMessage')
+	console.log(phno)
+	console.log(massage)
+   	const response = fast2sms.sendMessage({authorization:process.env.API_KEY,message: massage, numbers: [phno]})
+	return mobile_otp;
+}
+
+
+app.get('/sendmobileotp',function(req,res){
+	var prodata={
+		phno: req.query.mb
+	}
+	let errors=[]
+	let mb= req.query.mb;
+	console.log(mb)
+	db.sample1.find(prodata, function(err,dat){
+		console.log('find mobile number')
+		if(dat.length>0){
+			mobile_otp=sendmobileotpf(mb);
+			console.log('otp sent succesfully')
+			errors.push({msg:"otp sent succesfully"});
+			res.render("mobileotp",{errors});
+		}
+		else{
+			console.log('can not find mobile number')
+			console.log('profile does not exit or otp incorrect!!')
+			errors.push({msg:"Mobile Number does not Exists"});
+			res.render("smobileotp",{errors});
+		}
+	})
+
+})
+
 app.get('/mobileotpsubmit',function(req,res){
 	var prodata = {
-		phno : req.query.phno
+		phno : req.query.mb
 	}
-	let phno=req.query.phno;
-	let mailotp=req.query.mailotp;
+	let phno=req.query.mb;
+	let mobileotp=req.query.mobileotp;
+	console.log('entered phno is')
+	console.log(phno)
+	console.log('entered mobileotp is')
+	console.log(mobileotp)
+	console.log('sent mobileotp is')
+	console.log(mobile_otp)
 	let errors=[]
 	db.sample1.find(prodata, function(err,dat){
 		if(dat.length>0){
-			if(req.query.phno == '0000000000' && req.query.mobileotp == '12345678'){
+			console.log('inside mobileotpsubmit');
+			console.log(dat);
+			if(req.query.mb == '9999999999' && req.query.mobileotp == '12345678'){
 				var odata
 				var idata
 				db.orders.find({}, function(err,dat){
@@ -246,13 +298,27 @@ app.get('/mobileotpsubmit',function(req,res){
 				})
 			}
 			else{
-				db.sample1.find(prodata)
-				res.redirect('profiles/'+req.query.rno)
+				if(mobile_otp==mobileotp){
+
+
+					db.collection("sample1").findOne({phno: phno}, function(err, result) {
+    					if (err) throw err;
+    					console.log(result.rno);
+    					res.redirect('profiles/'+result.rno)
+    				})
+
+				}
+				else{
+					console.log('wrong otp')
+					errors.push({msg:"otp do not match"});
+					res.render("mobileotp",{errors});
+				}
+				
 			}
 		}
 		else{
 			console.log('profile does not exit or otp incorrect!!')
-			errors.push({msg:"mobile number or otp do not match"});
+			errors.push({msg:"Mobile Number do not match"});
 			res.render("mobileotp",{errors});
 			
 		}
