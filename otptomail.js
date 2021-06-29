@@ -7,17 +7,17 @@ const log = console.log;
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'kumarsekumar12345@gmail.com', // TODO: your gmail account
-        pass: 'kumarsekumar' // TODO: your gmail password
+        user: '', // TODO: your gmail account for example test@test.com
+        pass: '' // TODO: your gmail password
     }
 });
 
 // Step 2
 let mailOptions = {
-    from: 'kumarsekumar12345@gmail.com', // TODO: email sender
-    to: 'akbhobhiya2000@gmail.com', // TODO: email receiver
+    from: '', // TODO: email sender for example test@test.com
+    to: '', // TODO: email receiver for example test@test.com
     subject: 'NITKL Login OTP',
-    text: 'Your otp is :: 123456'
+    text: '' // TODO: text you want to send
 };
 
 // Step 3
