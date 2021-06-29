@@ -1,6 +1,6 @@
 # Online-laundry-management-system
 This is an online portal to book a pick up for cloths from room, this is bascally for hostel students.
-
+The aim of this project is to secure the login system, so for that we have implemented three options QR code login, mobile otp login, mail otp login. All these options are the second factor login security. These will prompt after you enter your correct login username and password.
 
 ## Setting up environment:
 To run this project your system should have npm and NodeJS installed.
@@ -32,5 +32,5 @@ You should now be seeing the main page.
 ### For any new Features, Bugs or suggestions pls open an issue.
 
 Contributors:<br>
-## [Ashok Bhobhiya](https://github.com/Akbhobhiya)<br>
-## Ankit Gupta<br>
+#### [Ashok Bhobhiya](https://github.com/Akbhobhiya)
+#### Ankit Gupta
